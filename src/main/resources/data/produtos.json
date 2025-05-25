@@ -1,0 +1,142 @@
+[
+  {
+    "nome":"Camisa Tshirt Basica Azul",
+    "imagem":"../../../assets/img/products/camisa-1.png",
+    "preco": 99.99,
+    "categoria":"Camisas",
+    "tamanhos":["P", "M", "G", "GG"]
+  },
+  {
+    "nome":"Camisa Tshirt Basica Verde",
+    "imagem":"../../../assets/img/products/camisa-2.png",
+    "preco": 110.99,
+    "categoria":"Camisas",
+    "tamanhos":["P", "M", "G", "GG"]
+  },
+  {
+    "nome":"Camisa Tshirt Basica Amarela",
+    "imagem":"../../../assets/img/products/camisa-3.png",
+    "preco": 114.99,
+    "categoria":"Camisas",
+    "tamanhos":["P", "M", "G", "GG"]
+  },
+  {
+    "nome":"Camisa Tshirt Basica Vermelha",
+    "imagem":"../../../assets/img/products/camisa-4.png",
+    "preco": 80.99,
+    "categoria":"Camisas",
+    "tamanhos":["P", "M", "G", "GG"]
+  },
+  {
+    "nome":"Camisa Tshirt Basica Preta",
+    "imagem":"../../../assets/img/products/camisa-5.png",
+    "preco": 100.99,
+    "categoria":"Camisas",
+    "tamanhos":["P", "M", "G", "GG"]
+  },
+  {
+    "nome":"Camiseta Tshirt Basica Branca",
+    "imagem":"../../../assets/img/products/camiseta-1.png",
+    "preco": 60.99,
+    "categoria":"Camisas",
+    "tamanhos":["P", "M", "G", "GG"]
+  },
+  {
+    "nome":"Camiseta Tshirt Basica Nude",
+    "imagem":"../../../assets/img/products/camiseta-2.png",
+    "preco": 63.99,
+    "categoria":"Camisas",
+    "tamanhos":["P", "M", "G", "GG"]
+  },
+  {
+    "nome":"Camiseta Tshirt Basica Marrom",
+    "imagem":"../../../assets/img/products/camiseta-3.png",
+    "preco": 65.99,
+    "categoria":"Camisas",
+    "tamanhos":["P", "M", "G", "GG"]
+  },
+  {
+    "nome":"Camiseta Tshirt Basica Preta",
+    "imagem":"../../../assets/img/products/camiseta-4.png",
+    "preco": 61.99,
+    "categoria":"Camisas",
+    "tamanhos":["P", "M", "G", "GG"]
+  },
+  {
+    "nome":"Camiseta Tshirt Basica Cinza",
+    "imagem":"../../../assets/img/products/camiseta-5.png",
+    "preco": 62.99,
+    "categoria":"Camisas",
+    "tamanhos":["P", "M", "G", "GG"]
+  },
+  {
+    "nome":"Bermuda Brim Cinza",
+    "imagem":"../../../assets/img/products/bermuda-1.png",
+    "preco": 99.99,
+    "categoria":"Bermudas",
+    "tamanhos":["38", "40", "42", "44", "46", "48"]
+  },
+  {
+    "nome":"Bermuda Brim Nude",
+    "imagem":"../../../assets/img/products/bermuda-2.png",
+    "preco": 89.99,
+    "categoria":"Bermudas",
+    "tamanhos":["38", "40", "42", "44", "46", "48"]
+  },
+  {
+    "nome":"Bermuda Brim Preta",
+    "imagem":"../../../assets/img/products/bermuda-3.png",
+    "preco": 100.99,
+    "categoria":"Bermudas",
+    "tamanhos":["38", "40", "42", "44", "46", "48"]
+  },
+  {
+    "nome":"Bermuda Brim Azul",
+    "imagem":"../../../assets/img/products/bermuda-4.png",
+    "preco": 110.99,
+    "categoria":"Bermudas",
+    "tamanhos":["38", "40", "42", "44", "46", "48"]
+  },
+  {
+    "nome":"Bermuda Brim Bege",
+    "imagem":"../../../assets/img/products/bermuda-5.png",
+    "preco": 140.99,
+    "categoria":"Bermudas",
+    "tamanhos":["38", "40", "42", "44", "46", "48"]
+  },
+  {
+    "nome":"Calça Skinny Marrom",
+    "imagem":"../../../assets/img/products/calca-1.png",
+    "preco": 140.99,
+    "categoria":"Calças",
+    "tamanhos":["38", "40", "42", "44", "46", "48"]
+  },
+  {
+    "nome":"Calça Skinny Cinza",
+    "imagem":"../../../assets/img/products/calca-2.png",
+    "preco": 170.99,
+    "categoria":"Calças",
+    "tamanhos":["38", "40", "42", "44", "46", "48"]
+  },
+  {
+    "nome":"Calça Skinny Cinza",
+    "imagem":"../../../assets/img/products/calca-2.png",
+    "preco": 170.99,
+    "categoria":"Calças",
+    "tamanhos":["38", "40", "42", "44", "46", "48"]
+  },
+  {
+    "nome":"Calça Skinny Preta",
+    "imagem":"../../../assets/img/products/calca-3.png",
+    "preco": 165.99,
+    "categoria":"Calças",
+    "tamanhos":["38", "40", "42", "44", "46", "48"]
+  },
+  {
+    "nome":"Calça Skinny Bege",
+    "imagem":"../../../assets/img/products/calca-4.png",
+    "preco": 180.99,
+    "categoria":"Calças",
+    "tamanhos":["38", "40", "42", "44", "46", "48"]
+  }
+]
