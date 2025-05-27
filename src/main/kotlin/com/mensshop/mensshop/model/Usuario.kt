@@ -1,0 +1,21 @@
+package com.mensshop.mensshop.model
+
+import jakarta.persistence.*
+
+@Entity
+data class Usuario(
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0,
+
+    val nome: String,
+
+    val sobrenome: String,
+
+    val telefone: String,
+
+    @Column(unique = true)
+    val email: String,
+
+    val senha: String
+)
