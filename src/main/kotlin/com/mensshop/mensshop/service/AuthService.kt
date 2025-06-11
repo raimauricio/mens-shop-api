@@ -13,20 +13,23 @@ class AuthService(
     private val passwordEncoder: PasswordEncoder,
     private val jwtService: JwtService
 ) {
-    fun registrar(request: RegistroRequest): AuthResponse {
+    fun registrar(request: RegistroRequest): String {
+        if(usuarioRepository.findByEmail(request.email).isPresent()){
+            throw Exception("Usuário já existente")
+        }
+
         val usuario = Usuario(
             0,
             request.nome,
-            request.telefone,
             request.sobrenome,
+            request.telefone,
             request.email,
             passwordEncoder.encode(request.senha)
         )
 
         usuarioRepository.save(usuario)
 
-        val token = jwtService.gerarToken(usuario.email)
-        return AuthResponse(token)
+        return "Usuário registrado com sucesso, realize o login!"
     }
 
     fun autenticar(request: LoginRequest): LoginResponse {

@@ -12,8 +12,17 @@ class AuthController(
     private val authService: AuthService
 ) {
     @PostMapping("/registro")
-    fun registrar(@RequestBody request: RegistroRequest): ResponseEntity<AuthResponse> {
-        return ResponseEntity.ok(authService.registrar(request))
+    fun registrar(@RequestBody request: RegistroRequest): ResponseEntity<Any> {
+        return try {
+            ResponseEntity.ok(mapOf("mensagem" to authService.registrar(request)))
+        } catch (ex: Exception) {
+            val erro = mapOf(
+                "titulo" to ("Erro"),
+                "mensagem" to ("Erro ao tentar realizar o cadastro, valide os dados e tente novamente!")
+            )
+            ResponseEntity.badRequest().body(erro)
+        }
+
     }
 
     @PostMapping("/login")
