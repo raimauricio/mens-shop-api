@@ -17,5 +17,11 @@ data class Usuario(
     @Column(unique = true)
     val email: String,
 
-    val senha: String
+    val senha: String,
+
+    @OneToMany(mappedBy = "usuario")
+    val cartoes: List<Cartao> = emptyList(),
+
+    @OneToMany(mappedBy = "usuario")
+    val enderecos: List<Endereco> = emptyList()
 )

@@ -15,11 +15,12 @@ class AuthService(
 ) {
     fun registrar(request: RegistroRequest): AuthResponse {
         val usuario = Usuario(
-            nome = request.nome,
-            email = request.email,
-            sobrenome = request.sobrenome,
-            telefone = request.telefone,
-            senha = passwordEncoder.encode(request.senha)
+            0,
+            request.nome,
+            request.telefone,
+            request.sobrenome,
+            request.email,
+            passwordEncoder.encode(request.senha)
         )
 
         usuarioRepository.save(usuario)
@@ -28,7 +29,7 @@ class AuthService(
         return AuthResponse(token)
     }
 
-    fun autenticar(request: LoginRequest): AuthResponse {
+    fun autenticar(request: LoginRequest): LoginResponse {
         val usuario = usuarioRepository.findByEmail(request.email)
             .orElseThrow { Exception("Usuário não encontrado") }
 
@@ -37,6 +38,16 @@ class AuthService(
         }
 
         val token = jwtService.gerarToken(usuario.email)
-        return AuthResponse(token)
+
+        val usuarioResponse = UsuarioResponse(
+            usuario.id,
+            usuario.nome,
+            usuario.sobrenome,
+            usuario.email,
+            usuario.telefone,
+            usuario.enderecos,
+            usuario.cartoes
+        )
+        return LoginResponse(token, usuarioResponse)
     }
 }
