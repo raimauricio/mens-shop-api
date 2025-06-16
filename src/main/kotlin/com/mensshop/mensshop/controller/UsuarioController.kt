@@ -1,6 +1,5 @@
 package com.mensshop.mensshop.controller
 
-import com.mensshop.mensshop.dto.CarrinhoResponse
 import com.mensshop.mensshop.dto.CartaoResponse
 import com.mensshop.mensshop.dto.EnderecoResponse
 import com.mensshop.mensshop.dto.ItemCarrinhoRequest
@@ -20,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.userdetails.User as SpringUser
 
 @RestController
 @RequestMapping("/usuario")
@@ -27,14 +28,21 @@ class UsuarioController(
     private val usuarioRepository: UsuarioRepository,
     private val produtoRepository: ProdutoRepository
 ) {
-
     @PutMapping("/{id}")
     fun atualizarUsuario(
         @PathVariable id: Long,
-        @RequestBody usuarioUpdateRequest: UsuarioUpdateRequest
+        @RequestBody usuarioUpdateRequest: UsuarioUpdateRequest,
+        auth: Authentication,
     ): ResponseEntity<Void> {
-        val usuario = usuarioRepository.findById(id)
-            .orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado") }
+        val springUser = auth.principal as SpringUser
+        val emailLogado = springUser.username
+
+        val usuario = usuarioRepository.findByEmail(emailLogado)
+            .orElseThrow { ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuário inválido") }
+
+        if (usuario.id != id) {
+            throw ResponseStatusException(HttpStatus.FORBIDDEN, "Você não pode modificar outro usuário")
+        }
 
         usuarioUpdateRequest.endereco?.let {
             if (!usuario.enderecos.any { end -> end.id == it.id }) {
