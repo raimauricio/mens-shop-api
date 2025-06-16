@@ -17,7 +17,10 @@ data class Endereco(
     val numero: Int,
 
     @JsonProperty("complemento")
-    val nomplemento: String,
+    val complemento: String,
+
+    @JsonProperty("cep")
+    val cep: String,
 
     @JsonProperty("bairro")
     val bairro: String,

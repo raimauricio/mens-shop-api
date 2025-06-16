@@ -23,5 +23,11 @@ data class Usuario(
     val cartoes: List<Cartao> = emptyList(),
 
     @OneToMany(mappedBy = "usuario")
-    val enderecos: List<Endereco> = emptyList()
+    val enderecos: List<Endereco> = emptyList(),
+
+    @OneToOne(mappedBy = "usuario",
+        cascade = [CascadeType.ALL],
+        fetch = FetchType.LAZY
+    )
+    val carrinho: Carrinho? = null,
 )

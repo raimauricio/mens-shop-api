@@ -7,21 +7,21 @@ import jakarta.persistence.*
 data class Produto(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty("id")
-    val Id: Long = 0,
+    val id: Long = 0,
 
     @JsonProperty("nome")
-    val Nome: String,
+    val nome: String,
 
     @JsonProperty("imagem")
-    val Imagem: String,
+    val imagem: String,
 
     @JsonProperty("preco")
-    val Preco: Double,
+    val preco: Double,
 
     @JsonProperty("categoria")
-    val Categoria: String,
+    val categoria: String,
 
     @JsonProperty("tamanhos")
     @ElementCollection
-    val Tamanhos: List<String>
+    val tamanhos: List<String>
 )

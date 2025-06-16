@@ -1,6 +1,7 @@
 package com.mensshop.mensshop.service
 
 import com.mensshop.mensshop.dto.*
+import com.mensshop.mensshop.model.Produto
 import com.mensshop.mensshop.model.Usuario
 import com.mensshop.mensshop.repository.UsuarioRepository
 import com.mensshop.mensshop.security.JwtService
@@ -14,7 +15,7 @@ class AuthService(
     private val jwtService: JwtService
 ) {
     fun registrar(request: RegistroRequest): String {
-        if(usuarioRepository.findByEmail(request.email).isPresent()){
+        if (usuarioRepository.findByEmail(request.email).isPresent()) {
             throw Exception("Usuário já existente")
         }
 
@@ -48,8 +49,41 @@ class AuthService(
             usuario.sobrenome,
             usuario.email,
             usuario.telefone,
-            usuario.enderecos,
-            usuario.cartoes
+            usuario.enderecos.map {
+                EnderecoResponse(
+                    it.id,
+                    it.logradouro,
+                    it.numero,
+                    it.cep,
+                    it.complemento,
+                    it.bairro,
+                    it.cidade,
+                    it.estado
+                )
+            } ?: emptyList(),
+            usuario.cartoes.map {
+                CartaoResponse(
+                    it.id,
+                    it.numero,
+                    it.nome,
+                    it.dataValidade,
+                    it.codigoSeguranca
+                )
+            } ?: emptyList(),
+            usuario.carrinho?.itens?.map {
+                CarrinhoResponse(
+                    it.produto.let { produto: Produto ->
+                        ProdutoResponse(
+                            produto.id,
+                            produto.nome,
+                            produto.preco,
+                            produto.categoria
+                        )
+                    }?: ProdutoResponse(0, "", 0.0, ""),
+                    it.quantidade,
+                    it.tamanhoSelecionado
+                )
+            } ?: emptyList()
         )
         return LoginResponse(token, usuarioResponse)
     }
