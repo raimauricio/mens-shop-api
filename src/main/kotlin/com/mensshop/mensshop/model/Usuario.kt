@@ -19,15 +19,21 @@ data class Usuario(
 
     val senha: String,
 
-    @OneToMany(mappedBy = "usuario")
-    val cartoes: List<Cartao> = emptyList(),
+    @OneToMany(mappedBy = "usuario",
+        cascade = [CascadeType.ALL],
+        orphanRemoval = true
+    )
+    var cartoes: MutableList<Cartao> = mutableListOf(),
 
-    @OneToMany(mappedBy = "usuario")
-    val enderecos: List<Endereco> = emptyList(),
+    @OneToMany(mappedBy = "usuario",
+        cascade = [CascadeType.ALL],
+        orphanRemoval = true
+    )
+    var enderecos: MutableList<Endereco> = mutableListOf(),
 
     @OneToOne(mappedBy = "usuario",
         cascade = [CascadeType.ALL],
         fetch = FetchType.LAZY
     )
-    val carrinho: Carrinho? = null,
+    var carrinho: Carrinho? = null,
 )

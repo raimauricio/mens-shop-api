@@ -16,5 +16,5 @@ data class Carrinho(
         orphanRemoval = true,
         fetch = FetchType.LAZY
     )
-    val itens: List<ItemCarrinho> = emptyList()
+    var itens: MutableList<ItemCarrinho> = mutableListOf()
 )
