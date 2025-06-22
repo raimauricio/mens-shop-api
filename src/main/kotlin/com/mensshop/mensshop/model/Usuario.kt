@@ -31,9 +31,15 @@ data class Usuario(
     )
     var enderecos: MutableList<Endereco> = mutableListOf(),
 
+    @OneToMany(mappedBy = "usuario",
+        cascade = [CascadeType.ALL],
+        fetch = FetchType.LAZY
+    )
+    var compras: MutableList<Compra> = mutableListOf(),
+
     @OneToOne(mappedBy = "usuario",
         cascade = [CascadeType.ALL],
         fetch = FetchType.LAZY
     )
-    var carrinho: Carrinho? = null,
+    var carrinho: Carrinho? = null
 )
