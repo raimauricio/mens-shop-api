@@ -186,7 +186,7 @@ class CompraController(
                     compra.pagamento.valorTotal,
                     "Pedido em processamento",
                     if (compra.recebimento.tipo == "retirada")
-                            "Retirada em loja - ${compra.recebimento.retiradaLoja}"
+                            "${compra.recebimento.retiradaLoja}"
                         else
                             "Entrega a Domicílio - ${compra.recebimento.enderecoEntrega?.logradouro}, ${compra.recebimento.enderecoEntrega?.numero} - ${compra.recebimento.enderecoEntrega?.cep}",
                     compra.produtos.map{ it ->
