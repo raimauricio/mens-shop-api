@@ -1,6 +1,9 @@
 package com.mensshop.mensshop.controller
 
 import com.mensshop.mensshop.dto.CompraRequest
+import com.mensshop.mensshop.dto.CompraResponse
+import com.mensshop.mensshop.dto.Etapas
+import com.mensshop.mensshop.dto.ProdutosPedidoResponse
 import com.mensshop.mensshop.model.Cartao
 import com.mensshop.mensshop.model.Compra
 import com.mensshop.mensshop.model.Endereco
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
 import org.springframework.security.core.Authentication
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import java.time.LocalDateTime
 import org.springframework.security.core.userdetails.User as SpringUser
@@ -132,6 +136,59 @@ class CompraController(
         usuarioRepository.save(usuario)
 
         return ResponseEntity.ok().build()
+    }
+
+    @GetMapping("/{id}")
+    fun minhasCompras(
+        @PathVariable id: Long,
+        auth: Authentication,
+    ): ResponseEntity<List<CompraResponse>> {
+        val springUser = auth.principal as SpringUser
+        val emailLogado = springUser.username
+
+        val usuario = usuarioRepository.findByEmail(emailLogado)
+            .orElseThrow { ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuário inválido") }
+
+        if (usuario.id != id) {
+            throw ResponseStatusException(HttpStatus.FORBIDDEN, "Você não pode modificar outro usuário")
+        }
+
+        if (usuario.compras.isEmpty()) {
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, "Nenhuma compra encontrada")
+        }
+
+        val etapas: List<Etapas> = listOf(
+            Etapas("Processando pagamento", LocalDateTime.now(), "pi pi-credit-card")
+        )
+
+
+
+        if(usuario.compras.isEmpty()){
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, "Nenhuma compra encontrada")
+        }
+
+        val compras = usuario.compras
+            .map { compra ->
+                CompraResponse(
+                    compra.id,
+                    compra.data,
+                    compra.pagamento.valorTotal,
+                    "Pedido em processamento",
+                    compra.recebimento.tipo,
+                    compra.produtos.map{ it ->
+                        ProdutosPedidoResponse(
+                            it.produto.nome,
+                            it.quantidade,
+                            it.tamanhoSelecionado,
+                            it.produto.preco
+                        )
+
+                    },
+                    etapas.map { it.copy(data = compra.data) }
+                )
+            }
+
+        return ResponseEntity.ok(compras)
     }
 }
 
