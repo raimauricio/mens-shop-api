@@ -1,5 +1,6 @@
 package com.mensshop.mensshop.dto
 
+import com.mensshop.mensshop.model.Endereco
 import java.math.BigDecimal
 
 data class CompraRequest(
@@ -16,14 +17,12 @@ data class ProdutoCompradoRequest(
 
 data class RecebimentoRequest(
     val tipo: String,
-    val enderecoId: Long? = null,
-    val novoEndereco: EnderecoResponse? = null,
+    val endereco: EnderecoResponse? = null,
     val retiradaLoja: Int? = null,
 )
 
 data class PagamentoRequest(
     val tipo: String,
     val valorTotal: BigDecimal,
-    val cartaoId: Long? = null,
-    val novoCartao: CartaoResponse? = null
+    val cartao: CartaoResponse? = null
 )

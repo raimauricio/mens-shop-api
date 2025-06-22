@@ -46,13 +46,13 @@ class Pagamento(
     @JsonProperty("valorTotal")
     val valorTotal: BigDecimal,
 
-    @JsonProperty("formaPagamento")
+    @JsonProperty("tipo")
     val formaPagamento: String,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cartaoId", nullable = false)
+    @JoinColumn(name = "cartaoId", nullable = true)
     @JsonIgnore
-    @JsonProperty("cartaoUsado")
+    @JsonProperty("cartao")
     val cartaoUsado: Cartao? = null
 )
 
@@ -68,9 +68,10 @@ class Recebimento(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "enderecoId", nullable = true)
     @JsonIgnore
-    @JsonProperty("enderecoEntrega")
+    @JsonProperty("endereco")
     val enderecoEntrega: Endereco? = null,
 
+    @JsonProperty("retiradaLoja")
     val retiradaLoja: Int
 )
 

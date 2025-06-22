@@ -36,7 +36,7 @@ class CompraController(
         @PathVariable id: Long,
         @RequestBody compraRequest: CompraRequest,
         auth: Authentication,
-    ): ResponseEntity<Void> {
+    ): ResponseEntity<Any> {
         val springUser = auth.principal as SpringUser
         val emailLogado = springUser.username
 
@@ -69,23 +69,26 @@ class CompraController(
         }
 
         var cartaoPagamento: Cartao? = null
-        if (compraRequest.pagamento.cartaoId == null && compraRequest.pagamento.novoCartao != null) {
-            val cartao = compraRequest.pagamento.novoCartao
-            Cartao(
-                0,
-                cartao.numero,
-                cartao.nome,
-                cartao.dataValidade,
-                cartao.codigoSeguranca,
-                usuario
-            ).let { cartao ->
-                cartaoPagamento = cartao
-                usuario.cartoes.add(cartao)
+        if(compraRequest.pagamento.cartao != null) {
+            if (compraRequest.pagamento?.cartao?.id == 0L) {
+                val cartao = compraRequest.pagamento.cartao
+                Cartao(
+                    0,
+                    cartao.numero,
+                    cartao.nome,
+                    cartao.dataValidade,
+                    cartao.codigoSeguranca,
+                    usuario
+                ).let { cartao ->
+                    cartaoPagamento = cartao
+                    usuario.cartoes.add(cartao)
+                }
+            } else {
+                cartaoPagamento = usuario.cartoes.find { it.id == compraRequest.pagamento.cartao?.id }
+                    ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Cartão não encontrado")
             }
-        } else {
-            cartaoPagamento = usuario.cartoes.find { it.id == compraRequest.pagamento.cartaoId }
-                ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Cartão não encontrado")
         }
+
 
         val pagamento = Pagamento(
             0,
@@ -95,31 +98,34 @@ class CompraController(
         )
 
         var enderecoEntrega: Endereco? = null
-        if (compraRequest.recebimento.enderecoId == null && compraRequest.recebimento.novoEndereco != null) {
-            val endereco = compraRequest.recebimento.novoEndereco
-            Endereco(
-                0,
-                endereco.logradouro,
-                endereco.numero,
-                endereco.cep,
-                endereco.complemento,
-                endereco.bairro,
-                endereco.cidade,
-                endereco.estado,
-                usuario
-            ).let { endereco ->
-                usuario.enderecos.add(endereco)
-                enderecoEntrega = endereco
+        if(compraRequest.recebimento.retiradaLoja == null) {
+            if (compraRequest.recebimento?.endereco?.id == 0L) {
+                val endereco = compraRequest.recebimento.endereco
+                Endereco(
+                    0,
+                    endereco.logradouro,
+                    endereco.numero,
+                    endereco.cep,
+                    endereco.complemento,
+                    endereco.bairro,
+                    endereco.cidade,
+                    endereco.estado,
+                    usuario
+                ).let { endereco ->
+                    usuario.enderecos.add(endereco)
+                    enderecoEntrega = endereco
+                }
+            } else {
+                enderecoEntrega = usuario.enderecos.find { it.id == compraRequest.recebimento.endereco?.id }
+                    ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Endereço não encontrado")
             }
-        } else {
-            enderecoEntrega = usuario.enderecos.find { it.id == compraRequest.recebimento.enderecoId }
-                ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "Endereço não encontrado")
         }
+
 
         val recebimento = Recebimento(
             0,
             compraRequest.recebimento.tipo,
-            enderecoEntrega,
+            enderecoEntrega ?: null,
             compraRequest.recebimento.retiradaLoja ?: 0
         )
 
@@ -133,9 +139,14 @@ class CompraController(
                 usuario
             )
         )
+        usuario.carrinho = null
+
         usuarioRepository.save(usuario)
 
-        return ResponseEntity.ok().build()
+        return ResponseEntity.ok( mapOf(
+            "titulo" to ("Compra concluída."),
+            "mensagem" to ("Acompanhe o status da sua compra no nosso menu de Minhas compras.")
+        ))
     }
 
     @GetMapping("/{id}")
@@ -174,7 +185,10 @@ class CompraController(
                     compra.data,
                     compra.pagamento.valorTotal,
                     "Pedido em processamento",
-                    compra.recebimento.tipo,
+                    if (compra.recebimento.tipo == "retirada")
+                            "Retirada em loja - ${compra.recebimento.retiradaLoja}"
+                        else
+                            "Entrega a Domicílio - ${compra.recebimento.enderecoEntrega?.logradouro}, ${compra.recebimento.enderecoEntrega?.numero} - ${compra.recebimento.enderecoEntrega?.cep}",
                     compra.produtos.map{ it ->
                         ProdutosPedidoResponse(
                             it.produto.nome,
