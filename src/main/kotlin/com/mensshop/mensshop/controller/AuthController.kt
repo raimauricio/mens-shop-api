@@ -30,6 +30,7 @@ class AuthController(
         return try {
             val responseAutenticacao = authService.autenticar(request)
             response.setHeader("Authorization", "Bearer ${responseAutenticacao.token}")
+            response.setHeader("Access-Control-Expose-Headers", "Authorization")
             ResponseEntity.ok(responseAutenticacao.userResponse)
         } catch (ex: Exception) {
             val erro = mapOf(
