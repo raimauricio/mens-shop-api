@@ -105,8 +105,8 @@ class CompraController(
                     0,
                     endereco.logradouro,
                     endereco.numero,
-                    endereco.cep,
                     endereco.complemento,
+                    endereco.cep,
                     endereco.bairro,
                     endereco.cidade,
                     endereco.estado,
@@ -139,7 +139,8 @@ class CompraController(
                 usuario
             )
         )
-        usuario.carrinho = null
+
+        usuario.carrinho?.itens?.clear()
 
         usuarioRepository.save(usuario)
 
