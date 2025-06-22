@@ -77,9 +77,10 @@ class AuthService(
                             produto.id,
                             produto.nome,
                             produto.preco,
-                            produto.categoria
+                            produto.categoria,
+                            produto.imagem
                         )
-                    }?: ProdutoResponse(0, "", 0.0, ""),
+                    }?: ProdutoResponse(0, "", 0.0, "", ""),
                     it.quantidade,
                     it.tamanhoSelecionado
                 )
